@@ -1,0 +1,76 @@
+@model GuhaStore.Core.Entities.Product
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewData["Title"] = "Tạo sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Tạo sản phẩm mới</h1>
+        <a href="/Admin/Products" class="btn btn-secondary">← Quay lại danh sách</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+    <script src="~/js/admin.js"></script>
+    <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div class="mb-2">
+            <label>Tên</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label>Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label>Giá</label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label>Giá khuyến mãi (nếu có)</label>
+            <input asp-for="SalePrice" class="form-control" />
+            <span asp-validation-for="SalePrice" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label>Tồn kho</label>
+            <input asp-for="StockQuantity" class="form-control" />
+            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label>Danh mục</label>
+            <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))">
+                <option value="">-- Chọn danh mục --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label>Thương hiệu</label>
+            <select asp-for="BrandId" class="form-control" asp-items="@(new SelectList(ViewBag.Brands, "Id", "Name"))">
+                <option value="">-- Chọn thương hiệu --</option>
+            </select>
+            <span asp-validation-for="BrandId" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label>Hình ảnh URL</label>
+            <input type="file" name="imageFile" accept="image/*" class="form-control" />
+            <small class="text-muted">Hoặc để trống nếu không upload</small>
+        </div>
+        <div class="mb-2 form-check">
+            <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+            <label class="form-check-label">Kích hoạt</label>
+        </div>
+        <div class="mb-2 text-end">
+                <a asp-action="Products" class="btn btn-secondary">Hủy</a>
+                <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+

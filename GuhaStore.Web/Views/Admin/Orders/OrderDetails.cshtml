@@ -1,0 +1,108 @@
+@model GuhaStore.Core.Entities.Order
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Chi tiết đơn hàng #@Model.Id</h1>
+        <a href="/Admin/Orders" class="btn btn-primary">← Quay lại danh sách</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Thông tin đơn hàng</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Mã đơn hàng:</strong> @Model.OrderCode</p>
+    <p><strong>Người đặt:</strong> @Model.UserId</p>
+                            <p><strong>Ngày đặt:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                        <div class="col-md-6">
+    <p><strong>Địa chỉ:</strong> @Model.ShippingAddress</p>
+                            <p><strong>Số điện thoại:</strong> @Model.Phone</p>
+                            <p><strong>Trạng thái:</strong>
+                                <span class="badge @(Model.Status == "delivered" ? "bg-success" : Model.Status == "processing" ? "bg-warning" : "bg-secondary")">
+                                    @Model.Status
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <p><strong>Ghi chú:</strong> @Model.Notes</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Thao tác</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdateOrderStatus" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="mb-3">
+                            <label class="form-label">Cập nhật trạng thái</label>
+                            <select name="status" class="form-select">
+                                <option value="pending" selected="@("pending"==Model.Status)">Chờ xử lý</option>
+                                <option value="processing" selected="@("processing"==Model.Status)">Đang xử lý</option>
+                                <option value="shipped" selected="@("shipped"==Model.Status)">Đã giao</option>
+                                <option value="delivered" selected="@("delivered"==Model.Status)">Hoàn thành</option>
+                                <option value="cancelled" selected="@("cancelled"==Model.Status)">Đã hủy</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cập nhật trạng thái</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Sản phẩm trong đơn hàng</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+        <tbody>
+            @foreach(var it in Model.OrderItems ?? Enumerable.Empty<GuhaStore.Core.Entities.OrderItem>())
+            {
+                <tr>
+                    <td>@it.Product?.Name</td>
+                    <td>@it.Quantity</td>
+                                <td>@it.Price.ToString("N0") ₫</td>
+                                <td><strong>@it.Total.ToString("N0") ₫</strong></td>
+                </tr>
+            }
+        </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Tổng cộng:</strong></td>
+                            <td><strong class="text-primary">@Model.TotalAmount.ToString("N0") ₫</strong></td>
+                        </tr>
+                    </tfoot>
+    </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

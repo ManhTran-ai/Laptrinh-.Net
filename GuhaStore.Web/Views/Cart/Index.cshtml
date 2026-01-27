@@ -1,0 +1,126 @@
+@using GuhaStore.Core.Entities
+@model IEnumerable<Cart>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    var cartTotal = ViewBag.CartTotal as decimal? ?? 0;
+}
+
+<style>
+/* Page Layout */
+.page { padding: 2rem 0; min-height: calc(100vh - 200px); background: #f9f9f9; }
+.center { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* Table */
+.cart-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+.cart-table th, .cart-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+.cart-table th { background: #f8f9fa; font-weight: 600; color: #1a1a1a; }
+.cart-table img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+
+/* Form Elements */
+.quantity-input { width: 80px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; text-align: center; }
+
+/* Summary Card */
+.summary-card { background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: fit-content; }
+.summary-card h5 { margin-bottom: 1.5rem; color: #1a1a1a; font-weight: 600; }
+.total-price { color: #dc3545; font-size: 1.5rem; font-weight: 700; }
+
+/* Empty Cart */
+.empty-cart { text-align: center; padding: 4rem 2rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.empty-cart p { font-size: 1.25rem; color: #666; margin-bottom: 2rem; }
+
+/* Cart Grid Layout */
+.cart-grid { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; margin-top: 2rem; }
+
+/* Responsive */
+@@media (max-width: 768px) {
+    .cart-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .center { padding: 0 16px; }
+    .cart-table { font-size: 0.9rem; }
+    .cart-table th, .cart-table td { padding: 0.75rem 0.5rem; }
+    .cart-table img { width: 60px; height: 60px; }
+    .quantity-input { width: 60px; }
+}
+</style>
+
+<!-- header is provided by shared layout; removed here to avoid duplicate topbars -->
+
+<section class="page">
+    <div class="container">
+        <div class="center">
+            <h1 style="text-align: center; margin-bottom: 2rem; color: #1a1a1a;">Giỏ hàng của bạn</h1>
+
+    @if (Model != null && Model.Any())
+    {
+                <div style="display: grid; grid-template-columns: 1fr 350px; gap: 2rem;">
+                    <div>
+                        <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                                @{
+                                                    var cartImg = string.IsNullOrEmpty(item.ProductImage) ? Url.Content("~/images/img_1.png") : Url.Content(item.ProductImage);
+                                                }
+                                                <img src="@cartImg" alt="@item.ProductName" style="width:80px;height:80px;object-fit:cover;border-radius:8px;" />
+                                            <div>
+                                                    <strong>@item.ProductName</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                        <td>@item.ProductPrice.ToString("N0")₫</td>
+                                    <td>
+                                            <form asp-action="UpdateQuantity" method="post" style="display: inline;">
+                                                <input type="hidden" name="cartId" value="@item.Id" />
+                                                <input type="number" name="quantity" value="@item.Quantity"
+                                                       min="1" class="quantity-input" />
+                                                <button type="submit" class="btn btn-outline-primary" style="margin-left: 8px;">Cập nhật</button>
+                                        </form>
+                                    </td>
+                                        <td>@((item.Quantity * item.ProductPrice).ToString("N0"))₫</td>
+                                    <td>
+                                            <form asp-action="RemoveItem" method="post" style="display: inline;">
+                                                <input type="hidden" name="cartId" value="@item.Id" />
+                                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+
+                        <div style="margin-top: 2rem; text-align: right;">
+                            <form asp-action="Clear" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-danger">Xóa tất cả</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <h5>Tóm tắt đơn hàng</h5>
+                        <p><strong>Tổng cộng:</strong> <span class="total-price">@cartTotal.ToString("N0")₫</span></p>
+                        <a asp-action="Index" asp-controller="Checkout" class="btn" style="width: 100%; margin-bottom: 1rem;">Thanh toán</a>
+                        <a asp-action="Index" asp-controller="Products" class="btn btn-outline-primary" style="width: 100%;">Tiếp tục mua sắm</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="empty-cart">
+                    <p>Giỏ hàng của bạn đang trống</p>
+                    <a asp-action="Index" asp-controller="Products" class="btn">Tiếp tục mua sắm</a>
+                </div>
+            }
+        </div>
+            </div>
+</section>
