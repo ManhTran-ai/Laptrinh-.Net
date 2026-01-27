@@ -1,0 +1,119 @@
+@model GuhaStore.Core.Entities.Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            @{
+                var mainImg = string.IsNullOrEmpty(Model.ImageUrl) ? Url.Content("~/images/img_1.png") : Url.Content(Model.ImageUrl);
+            }
+            <img src="@mainImg" class="img-fluid" alt="@Model.Name" />
+        </div>
+        <div class="col-md-6">
+            <h1>@Model.Name</h1>
+            <div class="mb-3">
+                @if (Model.SalePrice.HasValue && Model.SalePrice < Model.Price)
+                {
+                    <div class="text-decoration-line-through text-muted">@Model.Price.ToString("N0") ₫</div>
+                    <div class="text-danger fw-bold fs-4">@Model.SalePrice.Value.ToString("N0") ₫</div>
+                    <span class="badge bg-danger">Sale</span>
+                }
+                else
+                {
+                    <div class="fw-bold fs-4">@Model.Price.ToString("N0") ₫</div>
+                }
+            </div>
+
+            <div class="mb-3">
+                <strong>Mô tả:</strong>
+                <p>@Html.Raw(Model.Description)</p>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label"><strong>Số lượng:</strong></label>
+                <input type="number" id="quantity" value="1" min="1" max="@Model.StockQuantity" class="form-control" style="width: 100px;" />
+            </div>
+
+            <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <input type="hidden" name="quantity" id="hiddenQuantity" value="1" />
+                <button type="submit" class="btn btn-primary btn-lg">Thêm vào giỏ hàng</button>
+            </form>
+
+            <div class="mt-3">
+                <small class="text-muted">Còn lại: @Model.StockQuantity sản phẩm</small>
+            </div>
+        </div>
+    </div>
+
+    @{
+        var reviews = ViewBag.Reviews as IEnumerable<GuhaStore.Core.Entities.ProductReview> ?? Enumerable.Empty<GuhaStore.Core.Entities.ProductReview>();
+    }
+    @if (reviews.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3>Đánh giá sản phẩm</h3>
+                @foreach (var review in reviews)
+                {
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <strong>@(review.User?.FullName ?? "Khách")</strong>
+                                <div>
+                                    <span style="font-weight:600;">(@review.Rating/5)</span>
+                                </div>
+                            </div>
+                            <p class="mb-0">@review.Comment</p>
+                            <small class="text-muted">@review.CreatedAt.ToString("dd/MM/yyyy")</small>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @{
+        var relatedProducts = ViewBag.RelatedProducts as IEnumerable<GuhaStore.Core.Entities.Product> ?? Enumerable.Empty<GuhaStore.Core.Entities.Product>();
+    }
+    @if (relatedProducts.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3>Sản phẩm liên quan</h3>
+                <div class="row">
+                    @foreach (var product in relatedProducts)
+                    {
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <a asp-action="Details" asp-route-id="@product.Id">
+                                    @{
+                                        var relImg = string.IsNullOrEmpty(product.ImageUrl) ? Url.Content("~/images/img_1.png") : Url.Content(product.ImageUrl);
+                                    }
+                                    <img src="@relImg" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" />
+                                </a>
+                                <div class="card-body">
+                                    <h6 class="card-title">@product.Name</h6>
+                                    <div class="fw-bold">@product.Price.ToString("N0") ₫</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Update hidden quantity when form submits
+        document.querySelector('form[action*="AddToCart"]').addEventListener('submit', function(e) {
+            var quantity = document.getElementById('quantity').value;
+            document.getElementById('hiddenQuantity').value = quantity;
+        });
+    </script>
+}
+

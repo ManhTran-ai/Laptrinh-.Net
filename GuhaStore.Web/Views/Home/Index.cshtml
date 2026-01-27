@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Trang chủ - GuhaStore";
+}
+
+@{
+    var heroImage = Url.Content("~/banner02.jpg");
+}
+
+<div class="hero" style="background-image: url('@heroImage'); background-size: cover; background-position: center; height: 420px; display:flex; align-items:center;"></div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Sản phẩm</h5>
+                    <p class="card-text">Khám phá bộ sưu tập nước hoa của chúng tôi</p>
+                    <a href='@Url.Action("Index", "Products")' class="btn btn-primary">Xem sản phẩm</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Giỏ hàng</h5>
+                    <p class="card-text">Quản lý giỏ hàng của bạn</p>
+                    <a href='@Url.Action("Index", "Cart")' class="btn btn-success">Xem giỏ hàng</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Đăng nhập</h5>
+                    <p class="card-text">Truy cập tài khoản của bạn</p>
+                    <a href='@Url.Action("Login", "Account")' class="btn btn-info">Đăng nhập</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

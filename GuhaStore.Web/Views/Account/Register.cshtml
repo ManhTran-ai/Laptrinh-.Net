@@ -1,0 +1,132 @@
+@model GuhaStore.Web.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<style>
+/* Base Styles */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; line-height: 1.6; color: #1a1a1a; background: #f9f9f9; }
+
+/* Header */
+/* Header styles are provided by the shared layout (_Topbar); avoid redefining them here */
+
+/* Page Layout */
+.page { padding: 4rem 0; min-height: calc(100vh - 200px); background: #f9f9f9; }
+.center { max-width: 420px; margin: 0 auto; }
+
+/* Card */
+.card {
+    background: #ffffff;
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #1a1a1a;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+/* Form Fields */
+.field { margin-bottom: 1.5rem; }
+label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+input {
+    width: 100%; padding: 14px;
+    border: 1px solid #ddd; border-radius: 8px;
+    font-size: 0.95rem; transition: 0.2s;
+}
+input:focus { outline: none; border-color: #1a1a1a; }
+
+/* Button */
+.btn { background: #1a1a1a; color: #fff; border: none; padding: 14px 32px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; font-weight: 500; font-size: 0.95rem; transition: background-color 0.2s; width: 100%; text-align: center; }
+.btn:hover { background: #333; }
+
+/* Error Messages */
+.error {
+    color: #b91c1c; background: #fef2f2;
+    border: 1px solid #fecaca; padding: 12px;
+    border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;
+}
+
+/* Helper Links */
+.helper { margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: #666; }
+.helper a { color: #1a1a1a; text-decoration: none; font-weight: 600; }
+
+/* Validation */
+.field-validation-error { color: #b91c1c; font-size: 0.85rem; margin-top: 4px; }
+</style>
+
+@* Header is rendered by shared layout; removed here to avoid duplication *@
+
+<section class="page">
+    <div class="container">
+        <div class="center">
+            <div class="card">
+                <h2>Đăng ký tài khoản</h2>
+
+                <div id="messageContainer">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="error">@TempData["ErrorMessage"]</div>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div style="color: #059669; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">@TempData["SuccessMessage"]</div>
+                    }
+                </div>
+
+                <form asp-action="Register" method="post" id="registerForm">
+                    <div class="field">
+                        <label asp-for="Username">Tên đăng nhập</label>
+                        <input asp-for="Username" type="text" required placeholder="Nhập tên đăng nhập...">
+                        <span asp-validation-for="Username" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" type="email" required placeholder="Nhập email...">
+                        <span asp-validation-for="Email" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="Phone">Số điện thoại</label>
+                        <input asp-for="Phone" type="tel" required placeholder="Nhập số điện thoại...">
+                        <span asp-validation-for="Phone" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="Password">Mật khẩu</label>
+                        <input asp-for="Password" type="password" required placeholder="Nhập mật khẩu...">
+                        <span asp-validation-for="Password" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="ConfirmPassword">Xác nhận mật khẩu</label>
+                        <input asp-for="ConfirmPassword" type="password" required placeholder="Nhập lại mật khẩu...">
+                        <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+                    </div>
+
+                    <button class="btn" type="submit">Đăng ký</button>
+                </form>
+
+                <div class="helper">
+                    Đã có tài khoản? <a asp-action="Login">Đăng nhập ngay</a>
+                </div>
+
+                <div class="helper">
+                    <a href="/">Quay về trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

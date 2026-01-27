@@ -1,0 +1,38 @@
+@model IEnumerable<GuhaStore.Core.Entities.Order>
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Quản lý đơn hàng</h1>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h2>Quản lý đơn hàng</h2>
+            <table class="table table-striped">
+        <thead>
+            <tr><th>ID</th><th>Khách hàng</th><th>Tổng</th><th>Trạng thái</th><th>Ngày</th><th>Thao tác</th></tr>
+        </thead>
+        <tbody>
+            @foreach(var o in Model)
+            {
+                <tr>
+                    <td>@o.Id</td>
+                    <td>@o.UserId</td>
+                    <td>@o.TotalAmount.ToString("N0")₫</td>
+                    <td>@o.Status</td>
+                    <td>@o.CreatedAt.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a asp-action="OrderDetails" asp-route-id="@o.Id" class="btn">Chi tiết</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Trang Quản Lý";
+}
+
+@* Header styles are provided by shared layout; avoid redefining here *@
+
+<div class="admin-layout">
+    @Html.Partial("~/Views/Shared/_AdminSidebar.cshtml")
+    <div class="admin-main">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>Trang Quản Lý GuhaStore</h1>
+                <p>Chào mừng Admin @Context.Session.GetString("Username")!</p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>@ViewBag.TotalProducts</h3>
+                    <p>Sản phẩm</p>
+                </div>
+                <div class="stat-card">
+                    <h3>@ViewBag.TotalUsers</h3>
+                    <p>Người dùng</p>
+                </div>
+                <div class="stat-card">
+                    <h3>@ViewBag.TotalOrders</h3>
+                    <p>Đơn hàng</p>
+                </div>
+                <div class="stat-card">
+                    <h3>@ViewBag.TotalArticles</h3>
+                    <p>Bài viết</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
