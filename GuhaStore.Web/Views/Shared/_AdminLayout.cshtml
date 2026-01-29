@@ -100,21 +100,20 @@
             margin-left: 4px;
         }
 
-        /* Admin Layout */
+        /* Admin Layout
+           - layout and sidebar sizing are centralized in wwwroot/css/admin.css.
+           - keep minimal rules here to avoid conflicting with admin.css
+        */
         .admin-layout {
-            display: flex;
             min-height: calc(100vh - 72px);
         }
 
-        /* Sidebar styles moved to wwwroot/css/admin.css */
-
         .admin-main {
-            flex: 1;
-            margin-left: 280px;
             background: #f9f9f9;
             min-height: calc(100vh - 72px);
             padding: 24px;
             box-sizing: border-box;
+            margin-left: 0; /* ensure no extra gap; admin.css positions sidebar */
         }
 
         /* Center the inner admin content and use remaining space beside sidebar */

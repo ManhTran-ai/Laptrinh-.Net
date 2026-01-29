@@ -10,13 +10,48 @@ body.admin { background:var(--admin-bg); font-family: -apple-system, BlinkMacSys
 .image-preview{max-width:150px;border-radius:6px}
 
 /* Sidebar */
-.admin-layout { display: grid; grid-template-columns: 260px 1fr; gap: 20px; max-width:1200px; margin:20px auto; padding:16px; }
-.admin-sidebar { background: #fff; border-radius:8px; padding:16px; border:1px solid #eaeaea; height: fit-content; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+.admin-layout {
+    /* full-bleed layout so sidebar sits flush to left viewport edge */
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.admin-sidebar {
+    background: #fff;
+    /* make sidebar fixed to viewport left so no left gap */
+    position: fixed;
+    left: 0;
+    top: 72px;
+    width: 260px;
+    height: calc(100vh - 72px);
+    border-right: 1px solid #eaeaea;
+    border-radius: 0 8px 8px 0;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
 .sidebar-brand { font-weight:700; font-size:1.1rem; margin-bottom:12px; }
 .sidebar-nav ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
 .sidebar-link { display:block; padding:10px 12px; color:#111; text-decoration:none; border-radius:6px; }
 .sidebar-link:hover { background:#111; color:#fff; }
-.admin-main { background:transparent; }
+.admin-main {
+    /* push main content to the right of fixed sidebar */
+    margin-left: 260px;
+    min-height: calc(100vh - 72px);
+    background: transparent;
+    padding: 24px;
+}
+
+/* Force no extra page padding that could create gap left of sidebar */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+.admin-layout {
+    padding-left: 0;
+}
 
 @media (max-width: 900px) { .admin-layout { grid-template-columns: 1fr; padding:8px; } .admin-sidebar { order: 2; } .admin-main { order: 1; } }
 
