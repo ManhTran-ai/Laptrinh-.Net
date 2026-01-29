@@ -23,78 +23,7 @@
             background-color: #ffffff;
         }
 
-        .header {
-            background: #1a1a1a;
-            border-bottom: none;
-            height: 72px;
-            padding: 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .container {
-            max-width: none;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100%;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            height: 72px;
-        }
-        .logo a {
-            color: #ffffff;
-            text-decoration: none;
-        }
-        .logo-img {
-            height: 80px;
-            display: block;
-            object-fit: contain;
-        }
-
-        .nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 400;
-            transition: opacity 0.2s;
-            display: inline-flex;
-            align-items: center;
-            height: 72px;
-            line-height: normal;
-        }
-
-        .nav a:hover {
-            opacity: 0.7;
-        }
-
-        .cart-count {
-            background: #ff4444;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 0.75rem;
-            margin-left: 4px;
-        }
+        /* Topbar styles are centralized in wwwroot/css/site.css and applied via the shared partial _Topbar */
 
         .footer {
             border-top: 1px solid #eee;
@@ -131,6 +60,18 @@
 </head>
 <body>
     <partial name="_Topbar" />
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="container mt-3">
+            <div class="alert alert-success" role="alert">@TempData["SuccessMessage"]</div>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="container mt-3">
+            <div class="alert alert-danger" role="alert">@TempData["ErrorMessage"]</div>
+        </div>
+    }
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
