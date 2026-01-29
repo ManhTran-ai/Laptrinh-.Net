@@ -73,14 +73,16 @@ body {
 }
 /* No admin-specific topbar offset here — topbar must be identical across pages. */
 /* But visually align header content with admin main when on admin pages */
+/* Align header content with admin main by adding left padding equal to sidebar + container padding */
 body.admin .header .container {
-  margin-left: 260px;
-  width: calc(100% - 260px);
-  max-width: calc(1200px - 260px);
+  margin: 0;
+  padding-left: 284px; /* 260px sidebar + 24px container padding */
+  width: auto;
+  max-width: 1200px;
 }
 @media (max-width:900px) {
   body.admin .header .container {
-    margin-left: 0;
+    padding-left: 0;
     width: 100%;
     max-width: none;
   }
