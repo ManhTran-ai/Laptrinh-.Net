@@ -1,36 +1,47 @@
 @{
     ViewData["Title"] = "Trang Quản Lý";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@* Header styles are provided by shared layout; avoid redefining here *@
+<div class="admin-container">
+    <!-- Header -->
+    <div class="admin-header">
+        <h1>Trang Quản Lý Admin</h1>
+        <span>Chào @Context.Session.GetString("Username")</span>
+    </div>
 
-<div class="admin-layout">
-    @Html.Partial("~/Views/Shared/_AdminSidebar.cshtml")
-    <div class="admin-main">
-        <div class="admin-container">
-            <div class="admin-header">
-                <h1>Trang Quản Lý GuhaStore</h1>
-                <p>Chào mừng Admin @Context.Session.GetString("Username")!</p>
+    <!-- Statistics Grid -->
+    <div class="row" style="margin-bottom: 24px;">
+        <div class="card">
+            <div class="card-body">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--admin-accent); margin-bottom: 8px;">@ViewBag.TotalProducts</div>
+                <div style="color: var(--admin-text-light); font-weight: 500;">Sản phẩm</div>
             </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div style="font-size: 2rem; font-weight: 700; color: #27ae60; margin-bottom: 8px;">@ViewBag.TotalUsers</div>
+                <div style="color: var(--admin-text-light); font-weight: 500;">Người dùng</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div style="font-size: 2rem; font-weight: 700; color: #f39c12; margin-bottom: 8px;">@ViewBag.TotalOrders</div>
+                <div style="color: var(--admin-text-light); font-weight: 500;">Đơn hàng</div>
+            </div>
+        </div>
+    </div>
 
-            <!-- Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>@ViewBag.TotalProducts</h3>
-                    <p>Sản phẩm</p>
-                </div>
-                <div class="stat-card">
-                    <h3>@ViewBag.TotalUsers</h3>
-                    <p>Người dùng</p>
-                </div>
-                <div class="stat-card">
-                    <h3>@ViewBag.TotalOrders</h3>
-                    <p>Đơn hàng</p>
-                </div>
-                <div class="stat-card">
-                    <h3>@ViewBag.TotalArticles</h3>
-                    <p>Bài viết</p>
-                </div>
+    <!-- Quick Actions -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Thao tác nhanh</h5>
+        </div>
+        <div class="card-body">
+            <div class="row" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                <a href="/Admin/Products" class="btn btn-primary" style="text-align: center; text-decoration: none;">Sản phẩm</a>
+                <a href="/Admin/Orders" class="btn btn-primary" style="text-align: center; text-decoration: none;">Đơn hàng</a>
+                <a href="/Admin/Users" class="btn btn-secondary" style="text-align: center; text-decoration: none;">Người dùng</a>
             </div>
         </div>
     </div>

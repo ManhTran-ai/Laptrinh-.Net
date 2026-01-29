@@ -1,81 +1,108 @@
 @model GuhaStore.Core.Entities.Product
 @using Microsoft.AspNetCore.Mvc.Rendering
 @{
-    ViewData["Title"] = "Sửa sản phẩm";
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="admin-container">
+    <!-- Header -->
     <div class="admin-header">
-        <h1>Sửa sản phẩm: @Model.Name</h1>
-        <a href="/Admin/Products" class="btn btn-secondary">← Quay lại danh sách</a>
+        <h1>Chỉnh sửa sản phẩm</h1>
+        <a href="/Admin/Products" class="btn btn-secondary">← Quay lại</a>
     </div>
 
+    <!-- Form Card -->
     <div class="card">
         <div class="card-body">
-    <script src="~/js/admin.js"></script>
-    <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="Id" value="@Model.Id" />
-        <input type="hidden" asp-for="ImageUrl" />
-        <div class="mb-2">
-            <label>Tên</label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label>Mô tả</label>
-            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label>Giá</label>
-            <input asp-for="Price" class="form-control" />
-            <span asp-validation-for="Price" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label>Giá khuyến mãi (nếu có)</label>
-            <input asp-for="SalePrice" class="form-control" />
-            <span asp-validation-for="SalePrice" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label>Tồn kho</label>
-            <input asp-for="StockQuantity" class="form-control" />
-            <span asp-validation-for="StockQuantity" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label>Danh mục</label>
-            <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name", Model.CategoryId))">
-                <option value="">-- Chọn danh mục --</option>
-            </select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label>Thương hiệu</label>
-            <select asp-for="BrandId" class="form-control" asp-items="@(new SelectList(ViewBag.Brands, "Id", "Name", Model.BrandId))">
-                <option value="">-- Chọn thương hiệu --</option>
-            </select>
-            <span asp-validation-for="BrandId" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label>Hình ảnh URL</label>
-            <input type="file" name="imageFile" accept="image/*" class="form-control" />
-            @{
-                if (!string.IsNullOrEmpty(Model.ImageUrl))
+            <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" asp-for="ImageUrl" />
+
+                <!-- Product Basic Info -->
+                <div class="mb-2">
+                    <label for="Name">Tên sản phẩm <span style="color: red;">*</span></label>
+                    <input asp-for="Name" class="form-control" placeholder="Nhập tên sản phẩm" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-2">
+                    <label for="Description">Mô tả</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Price Section -->
+                <div class="row">
+                    <div class="mb-2">
+                        <label for="Price">Giá <span style="color: red;">*</span></label>
+                        <input asp-for="Price" type="number" step="1000" class="form-control" placeholder="0" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="SalePrice">Giá khuyến mãi</label>
+                        <input asp-for="SalePrice" type="number" step="1000" class="form-control" placeholder="0" />
+                        <span asp-validation-for="SalePrice" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Stock & Category -->
+                <div class="row">
+                    <div class="mb-2">
+                        <label for="StockQuantity">Tồn kho <span style="color: red;">*</span></label>
+                        <input asp-for="StockQuantity" type="number" class="form-control" placeholder="0" />
+                        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="CategoryId">Danh mục</label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name", Model.CategoryId))">
+                            <option value="">-- Chọn danh mục --</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label for="BrandId">Thương hiệu</label>
+                    <select asp-for="BrandId" class="form-control" asp-items="@(new SelectList(ViewBag.Brands, "Id", "Name", Model.BrandId))">
+                        <option value="">-- Chọn thương hiệu --</option>
+                    </select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="mb-2">
+                    <label for="imageFile">Hình ảnh sản phẩm</label>
+                    <input type="file" name="imageFile" accept="image/*" class="form-control" />
+                    <small class="text-muted">Để trống nếu không muốn thay đổi</small>
+                </div>
+
+                <!-- Current Image Preview -->
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
                 {
-                    <div style="margin-top:8px;"><img src="@(Url.Content(Model.ImageUrl))" alt="preview" style="max-width:150px; border-radius:6px;" /></div>
+                    <div class="mb-2">
+                        <label>Hình hiện tại</label>
+                        <div>
+                            <img src="@Url.Content(Model.ImageUrl)" alt="current" class="image-preview" />
+                        </div>
+                    </div>
                 }
-            }
-        </div>
-        <div class="mb-2 form-check">
-            <input asp-for="IsActive" class="form-check-input" type="checkbox" />
-            <label class="form-check-label">Kích hoạt</label>
-        </div>
-        <div class="mb-2 text-end">
-                <a asp-action="Products" class="btn btn-secondary">Hủy</a>
-                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-            </div>
-        </form>
+
+                <!-- Status -->
+                <div class="form-check mb-2">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" id="IsActive" />
+                    <label class="form-check-label" for="IsActive">Kích hoạt sản phẩm</label>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mb-2" style="display: flex; gap: 10px; margin-top: 24px;">
+                    <a href="/Admin/Products" class="btn btn-secondary">Hủy</a>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -2,29 +2,27 @@
 @{
     var path = ViewContext.HttpContext.Request.Path.Value?.ToLower() ?? "";
 }
-<link rel="stylesheet" href="~/css/admin.css" />
-
-<aside class="sidebar">
+<aside class="admin-sidebar">
     <div class="sidebar-header">
-        <h2>GuhaStore</h2>
+        <div class="sidebar-brand">GuhaStore</div>
         <span>Trang quản lý</span>
     </div>
 
     <nav>
         <ul class="sidebar-nav">
             <li>
-                <a href="@Url.Action("Index","Admin")" class="@(path == "/" || path == "/admin" ? "active" : "")">
-                Trang chủ
+                <a href="@Url.Action("Index","Admin")" class="sidebar-link @(path == "/" || path == "/admin" ? "active" : "")">
+                    Trang chủ
                 </a>
             </li>
             <li>
-                <a href="@Url.Action("Products","Admin")" class="@(path.Contains("/admin/products") ? "active" : "")">
-                  Sản phẩm
+                <a href="@Url.Action("Products","Admin")" class="sidebar-link @(path.Contains("/admin/products") ? "active" : "")">
+                    Sản phẩm
                 </a>
             </li>
             <li>
-                <a href="@Url.Action("Orders","Admin")" class="@(path.Contains("/admin/orders") ? "active" : "")">
-                   Đơn hàng
+                <a href="@Url.Action("Orders","Admin")" class="sidebar-link @(path.Contains("/admin/orders") ? "active" : "")">
+                    Đơn hàng
                 </a>
             </li>
             <!-- Article menu removed -->

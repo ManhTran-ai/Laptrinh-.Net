@@ -5,71 +5,69 @@
 }
 
 <div class="admin-container">
-    <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <!-- Header -->
+    <div class="admin-header">
         <h1>Quản lý sản phẩm</h1>
-        <a asp-action="CreateProduct" class="btn btn-primary">+ Thêm sản phẩm</a>
+        <a href="/Admin/CreateProduct" class="btn btn-primary">+ Thêm sản phẩm</a>
     </div>
 
+    <!-- Messages -->
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
 
+    <!-- Products Table -->
     <div class="card">
-        <div class="card-body">
-            <script src="~/js/admin.js"></script>
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert success">@TempData["SuccessMessage"]</div>
-    }
-    <p><a asp-action="CreateProduct" class="btn">+ Thêm sản phẩm</a></p>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Hình</th>
-                <th>Tên</th>
-                <th>Giá</th>
-                <th>Giá KM</th>
-                <th>Danh mục</th>
-                <th>Thương hiệu</th>
-                <th>Tồn kho</th>
-                <th>Trạng thái</th>
-                <th>Ngày tạo</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var p in Model)
-            {
-                <tr>
-                    <td>@p.Id</td>
-                    <td>
-                        @{
-                            var img = string.IsNullOrEmpty(p.ImageUrl) ? Url.Content("~/images/img_1.png") : Url.Content(p.ImageUrl);
-                        }
-                        <img src="@img" alt="@p.Name" style="width:72px;height:72px;object-fit:cover;border-radius:6px;" />
-                    </td>
-                    <td style="max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@p.Name</td>
-                    <td>@p.Price.ToString("N0")₫</td>
-                    <td>@(p.SalePrice.HasValue ? p.SalePrice.Value.ToString("N0") + "₫" : "-")</td>
-                    <td>@(p.Category?.Name ?? "-")</td>
-                    <td>@(p.Brand?.Name ?? "-")</td>
-                    <td>@p.StockQuantity</td>
-                    <td>@(p.IsActive ? "Hoạt động" : "Không hoạt động")</td>
-                    <td>@p.CreatedAt.ToString("dd/MM/yyyy")</td>
-                    <td>
-                        <a asp-action="EditProduct" asp-route-id="@p.Id" class="btn">Sửa</a>
-                        <form asp-action="DeleteProduct" method="post" style="display:inline;">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@p.Id" />
-                            <button type="submit" class="btn" onclick="return confirm('Xóa sản phẩm?')">Xóa</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
+        <div class="card-body" style="padding: 0; overflow-x: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">ID</th>
+                        <th style="width: 8%;">Hình</th>
+                        <th style="width: 18%;">Tên</th>
+                        <th style="width: 10%;">Giá</th>
+                        <th style="width: 10%;">Giá KM</th>
+                        <th style="width: 12%;">Danh mục</th>
+                        <th style="width: 12%;">Thương hiệu</th>
+                        <th style="width: 8%;">Kho</th>
+                        <th style="width: 10%;">Trạng thái</th>
+                        <th style="width: 12%;">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.Id</td>
+                            <td>
+                                @{
+                                    var img = string.IsNullOrEmpty(p.ImageUrl) ? Url.Content("~/images/img_1.png") : Url.Content(p.ImageUrl);
+                                }
+                                <img src="@img" alt="@p.Name" style="width:50px;height:50px;object-fit:cover;border-radius:4px;" />
+                            </td>
+                            <td style="max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@p.Name</td>
+                            <td>@p.Price.ToString("N0")₫</td>
+                            <td>@(p.SalePrice.HasValue ? p.SalePrice.Value.ToString("N0") + "₫" : "-")</td>
+                            <td>@(p.Category?.Name ?? "-")</td>
+                            <td>@(p.Brand?.Name ?? "-")</td>
+                            <td>@p.StockQuantity</td>
+                            <td>
+                                <span class="badge @(p.IsActive ? "bg-success" : "bg-secondary")">
+                                    @(p.IsActive ? "Hoạt động" : "Tắt")
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/Admin/EditProduct/@p.Id" class="btn" style="font-size: 0.85rem; padding: 6px 10px; background: var(--admin-accent); color: white; text-decoration: none; border-radius: 4px; display: inline-block;">Sửa</a>
+                                <form asp-action="DeleteProduct" method="post" style="display: inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@p.Id" />
+                                    <button type="submit" class="btn" style="font-size: 0.85rem; padding: 6px 10px; background: var(--admin-danger); color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm này?');">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
             </table>
         </div>
     </div>

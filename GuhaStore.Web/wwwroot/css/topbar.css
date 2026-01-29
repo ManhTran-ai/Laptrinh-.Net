@@ -1,0 +1,228 @@
+/* ========== TOPBAR - UNIFIED HEADER STYLES ========== */
+
+
+
+/* Topbar Header */
+.header {
+  background: #1a1a1a;
+  border-bottom: none;
+  height: 72px;
+  padding: 0 !important;
+  margin: 0 !important;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+
+.header .container {
+  max-width: none;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Header Content */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Logo */
+.logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  height: 72px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.logo a {
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 72px;
+  transition: opacity 0.2s ease;
+}
+
+.logo a:hover {
+  opacity: 0.8;
+}
+
+.logo-img {
+  height: 60px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  height: 72px;
+}
+
+.nav a,
+.nav button,
+.nav form button {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 400;
+  transition: opacity 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  height: 72px;
+  line-height: normal;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.nav a:hover,
+.nav button:hover,
+.nav form button:hover {
+  opacity: 0.7;
+}
+
+.nav a.active {
+  opacity: 0.9;
+  border-bottom: 2px solid #ffffff;
+}
+
+/* Admin Link Style */
+.nav a[href="/Admin"],
+.nav a[href*="/admin"] {
+  color: #3498db;
+  font-weight: 500;
+}
+
+.nav a[href="/Admin"]:hover,
+.nav a[href*="/admin"]:hover {
+  opacity: 0.8;
+}
+
+/* Logout Button */
+.nav form {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.nav form button {
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.nav form button:hover {
+  opacity: 0.7;
+}
+
+/* User Info Text */
+.nav span {
+  color: #cccccc;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* Cart Count Badge */
+.cart-count {
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  margin-left: 4px;
+  display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    height: 60px;
+  }
+
+  .header .container {
+    height: 60px;
+  }
+
+  .header-content {
+    height: 60px;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  .logo a {
+    height: 60px;
+  }
+
+  .logo-img {
+    height: 50px;
+  }
+
+  .nav {
+    height: 60px;
+    gap: 1rem;
+  }
+
+  .nav a,
+  .nav button,
+  .nav form button {
+    height: 60px;
+    font-size: 0.85rem;
+  }
+
+  .nav span {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav {
+    gap: 0.5rem;
+  }
+
+  .nav a,
+  .nav button,
+  .nav form button {
+    font-size: 0.75rem;
+    padding: 0 8px;
+  }
+
+  .nav span {
+    display: none;
+  }
+
+  .logo {
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    height: 40px;
+  }
+}

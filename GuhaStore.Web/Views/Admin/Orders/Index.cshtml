@@ -5,34 +5,83 @@
 }
 
 <div class="admin-container">
+    <!-- Header -->
     <div class="admin-header">
         <h1>Quản lý đơn hàng</h1>
     </div>
+
+    <!-- Orders Table -->
     <div class="card">
-        <div class="card-body">
-            <h2>Quản lý đơn hàng</h2>
-            <table class="table table-striped">
-        <thead>
-            <tr><th>ID</th><th>Khách hàng</th><th>Tổng</th><th>Trạng thái</th><th>Ngày</th><th>Thao tác</th></tr>
-        </thead>
-        <tbody>
-            @foreach(var o in Model)
-            {
-                <tr>
-                    <td>@o.Id</td>
-                    <td>@o.UserId</td>
-                    <td>@o.TotalAmount.ToString("N0")₫</td>
-                    <td>@o.Status</td>
-                    <td>@o.CreatedAt.ToString("dd/MM/yyyy")</td>
-                    <td>
-                        <a asp-action="OrderDetails" asp-route-id="@o.Id" class="btn">Chi tiết</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
+        <div class="card-body" style="padding: 0; overflow-x: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">ID Đơn</th>
+                        <th style="width: 20%;">Khách hàng</th>
+                        <th style="width: 15%;">Tổng tiền</th>
+                        <th style="width: 15%;">Trạng thái</th>
+                        <th style="width: 15%;">Ngày đặt</th>
+                        <th style="width: 25%;">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 32px;">
+                                <p style="margin: 0; color: var(--admin-text-light);">Không có đơn hàng nào</p>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach(var o in Model)
+                        {
+                            <tr>
+                                <td><strong>@o.Id</strong></td>
+                                <td>@o.UserId</td>
+                                <td><strong>@o.TotalAmount.ToString("N0")₫</strong></td>
+                                <td>
+                                    <span class="badge @GetStatusBadgeClass(o.Status)">
+                                        @GetStatusText(o.Status)
+                                    </span>
+                                </td>
+                                <td>@o.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <a href="/Admin/Orders/@o.Id" class="btn" style="font-size: 0.85rem; padding: 6px 10px; background: var(--admin-accent); color: white; text-decoration: none; border-radius: 4px; display: inline-block;">Chi tiết</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
             </table>
         </div>
     </div>
 </div>
+
+@{
+    string GetStatusBadgeClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "delivered" => "bg-success",
+            "pending" => "bg-warning",
+            "cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusText(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "delivered" => "Đã giao",
+            "pending" => "Chờ xử lý",
+            "processing" => "Đang xử lý",
+            "cancelled" => "Đã hủy",
+            _ => status ?? "Không xác định"
+        };
+    }
+}
 
 

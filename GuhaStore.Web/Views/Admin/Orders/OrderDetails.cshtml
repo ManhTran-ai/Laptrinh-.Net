@@ -5,104 +5,131 @@
 }
 
 <div class="admin-container">
+    <!-- Header -->
     <div class="admin-header">
         <h1>Chi tiết đơn hàng #@Model.Id</h1>
-        <a href="/Admin/Orders" class="btn btn-primary">← Quay lại danh sách</a>
+        <a href="/Admin/Orders" class="btn btn-secondary">← Quay lại</a>
     </div>
 
+    <!-- Order Information Grid -->
     <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Thông tin đơn hàng</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p><strong>Mã đơn hàng:</strong> @Model.OrderCode</p>
-    <p><strong>Người đặt:</strong> @Model.UserId</p>
-                            <p><strong>Ngày đặt:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
-                        </div>
-                        <div class="col-md-6">
-    <p><strong>Địa chỉ:</strong> @Model.ShippingAddress</p>
-                            <p><strong>Số điện thoại:</strong> @Model.Phone</p>
-                            <p><strong>Trạng thái:</strong>
-                                <span class="badge @(Model.Status == "delivered" ? "bg-success" : Model.Status == "processing" ? "bg-warning" : "bg-secondary")">
-                                    @Model.Status
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    @if (!string.IsNullOrEmpty(Model.Notes))
-                    {
-                        <p><strong>Ghi chú:</strong> @Model.Notes</p>
-                    }
-                </div>
+        <!-- Main Info Card -->
+        <div class="card">
+            <div class="card-header">
+                <h5>Thông tin đơn hàng</h5>
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Thao tác</h5>
-                </div>
-                <div class="card-body">
-                    <form asp-action="UpdateOrderStatus" method="post">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <div class="mb-3">
-                            <label class="form-label">Cập nhật trạng thái</label>
-                            <select name="status" class="form-select">
-                                <option value="pending" selected="@("pending"==Model.Status)">Chờ xử lý</option>
-                                <option value="processing" selected="@("processing"==Model.Status)">Đang xử lý</option>
-                                <option value="shipped" selected="@("shipped"==Model.Status)">Đã giao</option>
-                                <option value="delivered" selected="@("delivered"==Model.Status)">Hoàn thành</option>
-                                <option value="cancelled" selected="@("cancelled"==Model.Status)">Đã hủy</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Cập nhật trạng thái</button>
-                    </form>
+            <div class="card-body">
+                <div class="row">
+                    <div>
+                        <p><strong>Mã đơn hàng:</strong> <code style="background: #f0f3f7; padding: 4px 8px; border-radius: 4px;">@Model.OrderCode</code></p>
+                        <p><strong>Khách hàng:</strong> @Model.UserId</p>
+                        <p><strong>Ngày đặt:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                        <p><strong>Địa chỉ giao hàng:</strong> @(string.IsNullOrEmpty(Model.ShippingAddress) ? "-" : Model.ShippingAddress)</p>
+                        <p><strong>Số điện thoại:</strong> @(string.IsNullOrEmpty(Model.Phone) ? "-" : Model.Phone)</p>
+                        @if (!string.IsNullOrEmpty(Model.Notes))
+                        {
+                            <p><strong>Ghi chú:</strong> @Model.Notes</p>
+                        }
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="font-size: 0.9rem; color: var(--admin-text-light);">Trạng thái</p>
+                        <p style="font-size: 1.5rem; margin: 12px 0;">
+                            <span class="badge @GetStatusBadgeClass(Model.Status)">
+                                @GetStatusText(Model.Status)
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card mt-4">
+    <!-- Order Status Update -->
+    <div class="card">
         <div class="card-header">
-            <h5>Sản phẩm trong đơn hàng</h5>
+            <h5>Cập nhật trạng thái</h5>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
+            <form asp-action="UpdateOrderStatus" method="post" style="display: flex; gap: 10px; align-items: flex-end;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div style="flex: 1;">
+                    <label for="status" style="margin-bottom: 6px;">Trạng thái mới</label>
+                    <select name="status" class="form-control" id="status">
+                        <option value="pending" selected="@("pending"==Model.Status)">Chờ xử lý</option>
+                        <option value="processing" selected="@("processing"==Model.Status)">Đang xử lý</option>
+                        <option value="shipped" selected="@("shipped"==Model.Status)">Đã giao</option>
+                        <option value="delivered" selected="@("delivered"==Model.Status)">Hoàn thành</option>
+                        <option value="cancelled" selected="@("cancelled"==Model.Status)">Đã hủy</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Items Table -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Chi tiết sản phẩm</h5>
+        </div>
+        <div class="card-body" style="padding: 0; overflow-x: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th style="text-align: center;">Số lượng</th>
+                        <th style="text-align: right;">Đơn giá</th>
+                        <th style="text-align: right;">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var it in Model.OrderItems ?? Enumerable.Empty<GuhaStore.Core.Entities.OrderItem>())
+                    {
                         <tr>
-                            <th>Sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Đơn giá</th>
-                            <th>Thành tiền</th>
+                            <td>@(it.Product?.Name ?? "N/A")</td>
+                            <td style="text-align: center;">@it.Quantity</td>
+                            <td style="text-align: right;">@it.Price.ToString("N0")₫</td>
+                            <td style="text-align: right;"><strong>@it.Total.ToString("N0")₫</strong></td>
                         </tr>
-                    </thead>
-        <tbody>
-            @foreach(var it in Model.OrderItems ?? Enumerable.Empty<GuhaStore.Core.Entities.OrderItem>())
-            {
-                <tr>
-                    <td>@it.Product?.Name</td>
-                    <td>@it.Quantity</td>
-                                <td>@it.Price.ToString("N0") ₫</td>
-                                <td><strong>@it.Total.ToString("N0") ₫</strong></td>
-                </tr>
-            }
-        </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" class="text-end"><strong>Tổng cộng:</strong></td>
-                            <td><strong class="text-primary">@Model.TotalAmount.ToString("N0") ₫</strong></td>
-                        </tr>
-                    </tfoot>
-    </table>
-            </div>
+                    }
+                </tbody>
+                <tfoot style="border-top: 2px solid var(--admin-border);">
+                    <tr>
+                        <td colspan="3" style="text-align: right;"><strong>Tổng cộng:</strong></td>
+                        <td style="text-align: right;"><strong style="font-size: 1.1rem; color: var(--admin-accent);">@Model.TotalAmount.ToString("N0")₫</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
+
+@{
+    string GetStatusBadgeClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "delivered" => "bg-success",
+            "pending" => "bg-warning",
+            "processing" => "bg-warning",
+            "cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusText(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "delivered" => "Đã giao",
+            "pending" => "Chờ xử lý",
+            "processing" => "Đang xử lý",
+            "shipped" => "Đã giao",
+            "cancelled" => "Đã hủy",
+            _ => status ?? "Không xác định"
+        };
+    }
+}
 
 
