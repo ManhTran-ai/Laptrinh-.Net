@@ -4,6 +4,7 @@ using GuhaStore.Infrastructure.Repositories;
 using GuhaStore.Application.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.DataProtection;
 using Pomelo.EntityFrameworkCore.MySql;
 
 var builder = WebApplication.CreateBuilder(args);
