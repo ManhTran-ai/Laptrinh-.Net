@@ -29,3 +29,45 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Topbar (shared) */
+.header {
+  background: #1a1a1a;
+  border-bottom: none;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+}
+.header .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+}
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.logo { font-size: 1.5rem; font-weight: 600; color:#fff; display:flex; align-items:center; }
+.logo a { color: #fff; text-decoration:none; }
+.logo-img { height:40px; object-fit:contain; display:block; margin-right:8px; }
+.nav { display:flex; gap:1rem; align-items:center; }
+.nav a { color:#fff; text-decoration:none; font-size:0.95rem; opacity:0.9; padding:8px; }
+.nav a:hover { opacity:1; }
+.cart-count { background:#ff4444; color:#fff; border-radius:50%; padding:2px 6px; font-size:0.75rem; margin-left:4px; }
+.topbar-username { color:#d1d5db; margin-left:8px; font-size:0.95rem; }
+.topbar-logout-form { display:inline-block; margin-left:12px; }
+.topbar-logout-btn { background:none; border:none; color:#fff; cursor:pointer; font-size:0.95rem; padding:8px; }
+.topbar-link { color:#fff; text-decoration:none; padding:8px; }
+.admin-link { color:#7fd1ff; text-decoration:none; padding:8px; }
+
+@media (max-width:768px) {
+  .header .container { padding: 0 12px; }
+  .nav a { font-size:0.85rem; padding:6px; }
+  .logo-img { height:32px; }
+}

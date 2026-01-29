@@ -17,17 +17,17 @@
                 {
                     @if (Context.Session.GetString("UserRole") == "admin")
                     {
-                        <a href="/Admin" style="color: #0071e3;">Trang Quản Lý</a>
+                        <a href="/Admin" class="admin-link">Trang Quản Lý</a>
                     }
-                    <span style="color: #888;">Xin chào, @Context.Session.GetString("Username")</span>
-                    <form asp-action="Logout" asp-controller="Account" method="post" style="display: inline;">
-                        <button type="submit" style="background: none; border: none; color: #ffffff; cursor: pointer; font-size: 0.95rem;">Đăng Xuất</button>
+                    <span class="topbar-username">Xin chào, @Context.Session.GetString("Username")</span>
+                    <form asp-action="Logout" asp-controller="Account" method="post" class="topbar-logout-form">
+                        <button type="submit" class="topbar-logout-btn">Đăng Xuất</button>
                     </form>
                 }
                 else
                 {
-                    <a href="/register">Đăng Ký</a>
-                    <a href="/login">Đăng Nhập</a>
+                    <a href="/register" class="topbar-link">Đăng Ký</a>
+                    <a href="/login" class="topbar-link">Đăng Nhập</a>
                 }
             </nav>
         </div>
