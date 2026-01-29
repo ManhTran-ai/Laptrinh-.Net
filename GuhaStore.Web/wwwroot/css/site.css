@@ -71,3 +71,18 @@ body {
   .nav a { font-size:0.85rem; padding:6px; }
   .logo-img { height:32px; }
 }
+
+/* Align topbar for admin pages (offset for fixed sidebar) */
+body.admin .header .container {
+  max-width: 1200px;
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 0 24px;
+}
+@media (max-width:900px) {
+  body.admin .header .container {
+    margin-left: 0;
+    width: 100%;
+    padding: 0 12px;
+  }
+}
