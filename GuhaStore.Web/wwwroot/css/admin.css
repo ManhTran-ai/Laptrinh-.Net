@@ -65,4 +65,29 @@ body.admin { background:var(--admin-bg); font-family: -apple-system, BlinkMacSys
     .sidebar { width: 100%; border-radius: 8px; margin-bottom: 12px; }
 }
 
-
+/* Table nowrap and improved spacing for admin product list */
+.table th, .table td {
+    white-space: nowrap;
+    padding: 0.9rem 0.75rem;
+}
+.table-container {
+    overflow-x: auto;
+}
+.table th {
+    font-weight: 600;
+}
+.table td.name {
+    max-width: 420px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+.table td.center, .table th.center { text-align: center; }
+.table td.right, .table th.right { text-align: right; }
+.table td.img-col img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+}

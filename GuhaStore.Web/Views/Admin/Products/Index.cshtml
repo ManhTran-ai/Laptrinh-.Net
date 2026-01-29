@@ -4,6 +4,9 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</style>
+
 <div class="admin-container">
     <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
         <h1>Quản lý sản phẩm</h1>
@@ -22,8 +25,7 @@
     {
         <div class="alert success">@TempData["SuccessMessage"]</div>
     }
-    <p><a asp-action="CreateProduct" class="btn">+ Thêm sản phẩm</a></p>
-
+    <div class="table-container">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -44,21 +46,21 @@
             @foreach (var p in Model)
             {
                 <tr>
-                    <td>@p.Id</td>
-                    <td>
+                    <td class="center">@p.Id</td>
+                    <td class="img-col">
                         @{
                             var img = string.IsNullOrEmpty(p.ImageUrl) ? Url.Content("~/images/img_1.png") : Url.Content(p.ImageUrl);
                         }
-                        <img src="@img" alt="@p.Name" style="width:72px;height:72px;object-fit:cover;border-radius:6px;" />
+                        <img src="@img" alt="@p.Name" />
                     </td>
-                    <td style="max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@p.Name</td>
-                    <td>@p.Price.ToString("N0")₫</td>
-                    <td>@(p.SalePrice.HasValue ? p.SalePrice.Value.ToString("N0") + "₫" : "-")</td>
-                    <td>@(p.Category?.Name ?? "-")</td>
-                    <td>@(p.Brand?.Name ?? "-")</td>
-                    <td>@p.StockQuantity</td>
-                    <td>@(p.IsActive ? "Hoạt động" : "Không hoạt động")</td>
-                    <td>@p.CreatedAt.ToString("dd/MM/yyyy")</td>
+                    <td class="name">@p.Name</td>
+                    <td class="right">@p.Price.ToString("N0")₫</td>
+                    <td class="right">@(p.SalePrice.HasValue ? p.SalePrice.Value.ToString("N0") + "₫" : "-")</td>
+                    <td class="center">@(p.Category?.Name ?? "-")</td>
+                    <td class="center">@(p.Brand?.Name ?? "-")</td>
+                    <td class="center">@p.StockQuantity</td>
+                    <td class="center">@(p.IsActive ? "Hoạt động" : "Không hoạt động")</td>
+                    <td class="center">@p.CreatedAt.ToString("dd/MM/yyyy")</td>
                     <td>
                         <a asp-action="EditProduct" asp-route-id="@p.Id" class="btn">Sửa</a>
                         <form asp-action="DeleteProduct" method="post" style="display:inline;">
@@ -71,6 +73,7 @@
             }
         </tbody>
             </table>
+    </div>
         </div>
     </div>
 </div>

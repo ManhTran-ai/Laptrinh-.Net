@@ -8,6 +8,7 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GuhaStore.Web.styles.css" asp-append-version="true" />
     <style>
         /* Reset and Base Styles */
@@ -105,33 +106,27 @@
             min-height: calc(100vh - 72px);
         }
 
-        .admin-sidebar {
-            width: 280px;
-            background: #fff;
-            border-right: 1px solid #e5e5e5;
-            position: fixed;
-            height: calc(100vh - 72px);
-            top: 72px;
-            overflow-y: auto;
-            z-index: 10;
-        }
+        /* Sidebar styles moved to wwwroot/css/admin.css */
 
         .admin-main {
             flex: 1;
             margin-left: 280px;
             background: #f9f9f9;
             min-height: calc(100vh - 72px);
+            padding: 24px;
+            box-sizing: border-box;
         }
 
+        /* Center the inner admin content and use remaining space beside sidebar */
         .admin-container {
-            max-width: none;
-            margin: 2rem;
-            padding: 0 24px;
-            width: calc(100% - 2rem);
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0;
+            width: 100%;
         }
 
         .admin-header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 2rem;
         }
 
@@ -294,7 +289,7 @@
 
         /* Responsive */
         @@media (max-width: 768px) {
-            .admin-sidebar {
+            .sidebar {
                 transform: translateX(-100%);
             }
             .admin-main {
@@ -307,6 +302,36 @@
                 font-size: 0.85rem;
             }
         }
+        /* Sidebar nav styles */
+        .sidebar .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        .sidebar .sidebar-header h2 {
+            font-size: 1.25rem;
+            margin-bottom: 2px;
+        }
+        .sidebar nav { padding: 8px; }
+        .sidebar .sidebar-nav { list-style: none; padding: 0; margin: 0; }
+        .sidebar .sidebar-nav li { margin-bottom: 6px; }
+        .sidebar .sidebar-nav a {
+            display: block;
+            padding: 10px 12px;
+            color: #111;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+        }
+        .sidebar .sidebar-nav a.active {
+            background: #111;
+            color: #fff;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+        }
+
+        /* Topbar adjustments */
+        .header-content { padding: 0 24px; }
+        .logo { font-size: 1.75rem; }
+        .header .nav { margin-right: 16px; }
     </style>
 </head>
 <body>
