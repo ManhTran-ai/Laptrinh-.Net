@@ -22,37 +22,36 @@ body.admin { background:var(--admin-bg); font-family: -apple-system, BlinkMacSys
 
 /* Sidebar */
 .admin-layout {
-    /* full-bleed layout so sidebar sits flush to left viewport edge */
+    /* Centered admin layout: sidebar flows inside the main container
+       so header/topbar alignment remains identical to the site home page. */
     display: grid;
     grid-template-columns: 260px 1fr;
     gap: 20px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 16px;
+    box-sizing: border-box;
 }
 .admin-sidebar {
     background: #fff;
-    /* make sidebar fixed to viewport left so no left gap */
-    position: fixed;
-    left: 0;
-    top: 72px;
+    position: relative; /* part of flow */
     width: 260px;
-    height: calc(100vh - 72px);
+    height: auto;
     border-right: 1px solid #eaeaea;
-    border-radius: 0 8px 8px 0;
+    border-radius: 8px;
     padding: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    align-self: start;
 }
 .sidebar-brand { font-weight:700; font-size:1.1rem; margin-bottom:12px; }
 .sidebar-nav ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
 .sidebar-link { display:block; padding:10px 12px; color:#111; text-decoration:none; border-radius:6px; }
 .sidebar-link:hover { background:#111; color:#fff; }
 .admin-main {
-    /* push main content to the right of fixed sidebar */
-    margin-left: 260px;
     min-height: calc(100vh - 72px);
     background: transparent;
     padding: 24px;
+    box-sizing: border-box;
 }
 
 /* Force no extra page padding that could create gap left of sidebar */
