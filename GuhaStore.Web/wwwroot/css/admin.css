@@ -9,6 +9,17 @@ body.admin { background:var(--admin-bg); font-family: -apple-system, BlinkMacSys
 .alert.success{background:#e6ffef;padding:10px;border-radius:6px;border:1px solid #c7f0d2}
 .image-preview{max-width:150px;border-radius:6px}
 
+/* Ensure admin header titles render normally (prevent vertical/character wrapping) */
+.admin-header h1 {
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    line-height: 1.2;
+    font-size: 2rem;
+    margin: 0;
+    display: block;
+}
+
 /* Sidebar */
 .admin-layout {
     /* full-bleed layout so sidebar sits flush to left viewport edge */
