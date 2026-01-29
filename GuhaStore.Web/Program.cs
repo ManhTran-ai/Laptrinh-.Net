@@ -11,6 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Persist DataProtection keys to disk so session cookies remain valid across restarts
+// (helps avoid 'Error unprotecting the session cookie' exceptions during development)
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new System.IO.DirectoryInfo(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "DataProtection-Keys")))
+    .SetApplicationName("GuhaStore");
+
 // Configure MVC
 builder.Services.AddRazorPages();
 
