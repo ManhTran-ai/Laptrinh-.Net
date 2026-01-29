@@ -72,18 +72,4 @@ body {
   .logo-img { height:32px; }
 }
 /* No admin-specific topbar offset here — topbar must be identical across pages. */
-/* But visually align header content with admin main when on admin pages */
-/* Align header content with admin main by adding left padding equal to sidebar + container padding */
-body.admin .header .container {
-  margin: 0;
-  padding-left: 284px; /* 260px sidebar + 24px container padding */
-  width: auto;
-  max-width: 1200px;
-}
-@media (max-width:900px) {
-  body.admin .header .container {
-    padding-left: 0;
-    width: 100%;
-    max-width: none;
-  }
-}
+/* No admin-specific adjustments here — header is identical across site and admin */
