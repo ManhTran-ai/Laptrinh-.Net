@@ -66,16 +66,51 @@
                             <tbody>
                                 @foreach (var item in Model.CartItems)
                                 {
-                                    var itemDict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(
-                                        System.Text.Json.JsonSerializer.Serialize(item.Value));
+                                    var itemDict = item.Value;
                                     if (itemDict != null)
                                     {
+                                        // robust decimal conversion for various runtime types
+                                        object totalObj = itemDict.GetValueOrDefault("Total");
+                                        decimal total = 0m;
+                                        if (totalObj is decimal dec) total = dec;
+                                        else if (totalObj is double dbl) total = (decimal)dbl;
+                                        else if (totalObj is float fl) total = (decimal)fl;
+                                        else if (totalObj is int i) total = i;
+                                        else if (totalObj is long l) total = l;
+                                        else if (totalObj is string s && decimal.TryParse(s, out var parsed)) total = parsed;
+                                        else
+                                        {
+                                            // handle JsonElement (if present) or fallback to Convert.ToDecimal via string
+                                            try
+                                            {
+                                                if (totalObj is System.Text.Json.JsonElement je)
+                                                {
+                                                    if (je.ValueKind == System.Text.Json.JsonValueKind.Number && je.TryGetDecimal(out var jd))
+                                                    {
+                                                        total = jd;
+                                                    }
+                                                    else
+                                                    {
+                                                        var str = je.ToString();
+                                                        decimal.TryParse(str, out total);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    decimal.TryParse(Convert.ToString(totalObj), out total);
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                total = 0m;
+                                            }
+                                        }
                                         <tr>
                                             <td>
                                                 @itemDict.GetValueOrDefault("ProductName") x @itemDict.GetValueOrDefault("Quantity")
                                             </td>
                                             <td class="text-end">
-                                                @Convert.ToDecimal(itemDict.GetValueOrDefault("Total")).ToString("N0") VNĐ
+                                                @total.ToString("N0") VNĐ
                                             </td>
                                         </tr>
                                     }
